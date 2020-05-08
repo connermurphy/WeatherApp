@@ -1,0 +1,77 @@
+﻿@{
+    ViewBag.Title = "Search Weather";
+}
+
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <form id="weather--form" class="container-fluid col-8">
+
+                <div class="form-group row">
+                    <div class="col-12 input-group">
+                        <input type="text" class="form-control" id="location--name" required placeholder="Glasgow" />
+                    </div>
+                </div>
+                <div class="form-group row justify-content-center">
+                    <div class="col-4 input-group">
+                        <button type="submit" class="btn btn-primary">Fetch Weather</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="container">
+
+        <div class="row">
+            <div class="col-6 my-2" id="location--name-value">
+                Location - <span></span>
+            </div>
+            <div class="col-6 my-2" id="location--temp-value">
+                Temperature - <span></span> &deg;C
+            </div>
+            <div class="col-12 my-2" id="location--weather-value">
+                Weather - <span></span> 
+            </div>
+        </div>
+
+    </div>
+
+@section Scripts {
+
+    <script>
+
+        $("#weather--form").on("submit", function (e) {
+
+            e.preventDefault();
+
+            $.ajax({
+
+                url: `api/weather/${$("#location--name").val()}`,
+                method: "GET",
+                success: function (data) {
+
+                    console.log(data)
+
+                    if (data.message === "404") {
+                        $("#location--name-value").text("Invalid location. Please try again!");
+
+                    } else if (data.message === "400") {
+                        $("#location--name-value").text("Bad Request. Please try again!");
+                    } else {
+                        $("#location--name-value > span").text(data.name);
+                        $("#location--temp-value > span").text(data.main.temp);
+                        $("#location--weather-value > span").text(data.weather[0].main)
+                    }
+
+                },
+                error: function (response) {
+                    $("#location--name-value").text(response.statusText);
+                }
+            })
+
+        });
+
+    </script>
+
+}
