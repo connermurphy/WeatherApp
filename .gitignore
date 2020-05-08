@@ -339,6 +339,4 @@ ASALocalRun/
 # BeatPulse healthcheck temp database
 healthchecksdb
 
-#Hide Sensitive Data
-.appsettings.json
-
+appsettings.json
