@@ -341,5 +341,5 @@ healthchecksdb
 
 .config
 
-/appsettings.json
-/appsettings.Development.json
+WeatherApp/appsettings.json
+WeatherApp/appsettings.Development.json
