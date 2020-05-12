@@ -3,6 +3,16 @@
 }
 
 
+    @section Styles {
+
+        <style>
+            #error {
+                visibility: hidden;
+            }
+        </style>
+
+    }
+
     <div class="container">
         <div class="row justify-content-center">
             <form id="weather--form" class="container-fluid col-8">
@@ -24,13 +34,16 @@
     <div class="container">
 
         <div class="row">
-            <div class="col-6 my-2" id="location--name-value">
+            <div class="col-12" id="error">
+               
+            </div>
+            <div class="col-6 my-2 location--data" id="location--name-value">
                 Location - <span></span>
             </div>
-            <div class="col-6 my-2" id="location--temp-value">
+            <div class="col-6 my-2 location--data" id="location--temp-value">
                 Temperature - <span></span> &deg;C
             </div>
-            <div class="col-12 my-2" id="location--weather-value">
+            <div class="col-12 my-2 location--data" id="location--weather-value">
                 Weather - <span></span> 
             </div>
         </div>
@@ -53,13 +66,17 @@
                 method: "GET",
                 success: function (data) {
 
-                    console.log(data)
+                    $("#error").css("visibility", "hidden");
+                    $(".location--data").css("visibility", "visible");
 
                     if (data.message === "404") {
-                        $("#location--name-value").text("Invalid location. Please try again!");
-
+                        $(".location--data").css("visibility", "hidden");
+                        $("#error").css("visibility", "visible");
+                        $("#error").text("Invalid location. Please try again!");
                     } else if (data.message === "400") {
-                        $("#location--name-value").text("Bad Request. Please try again!");
+                        $(".location--data").css("visibility", "hidden");
+                        $("#error").css("visibility", "visible");
+                        $("#error").text("Bad Request!");
                     } else {
                         $("#location--name-value > span").text(data.name);
                         $("#location--temp-value > span").text(data.main.temp);
@@ -68,7 +85,10 @@
 
                 },
                 error: function (response) {
-                    $("#location--name-value").text(response.statusText);
+                    $(".location--data").css("visibility", "hidden");
+                    $("#error").text(response.statusText);
+                    $("#error").css("visibility", "visible");
+
                 }
             })
 
